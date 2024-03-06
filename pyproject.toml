@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "django-orm-challenges"
+version = "0.1.0"
+description = ""
+authors = ["Octopulus96 <octopulus96@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12"
+django = "4.2.3"
+faker = "^24.0.0"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
