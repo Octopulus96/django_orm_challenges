@@ -6,6 +6,20 @@ SECRET_KEY = 'django-insecure-09h#b!z-+y8+_+66)7dw)zak=7!yl6m-05kv!em9@zs+ie+202
 
 DEBUG = True
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [

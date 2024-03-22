@@ -8,19 +8,30 @@
 После обновления книги попробуйте получить описание книги и убедитесь, что вы видите новые значения.
 """
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+import logging, json
 
 from challenges.models import Book
 
+logger = logging.getLogger(__name__)
 
 def update_book(book_id: int, new_title: str, new_author_full_name: str, new_isbn: str) -> Book | None:
-    # код писать тут
-    pass
-
+    try:
+        book = Book.objects.get(id=book_id)
+    except ObjectDoesNotExist:
+        return None
+    book.title = new_title
+    book.author_full_name = new_author_full_name
+    book.isbn = new_isbn
+    book.save()
+    return book
 
 def update_book_handler(request: HttpRequest, book_id: int) -> HttpResponse:
-    title = request.POST.get("title")
-    author_full_name = request.POST.get("author_full_name")
-    isbn = request.POST.get("isbn")
+    logger.debug(request.body)
+    data = json.loads(request.body)
+    title = data.get("title")
+    author_full_name = data.get("author_full_name")
+    isbn = data.get("isbn")
     if not all([title, author_full_name, isbn]):
         return HttpResponseBadRequest("One of required parameters are missing")
 

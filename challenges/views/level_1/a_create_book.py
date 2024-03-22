@@ -8,19 +8,23 @@
 Делать post-запрос я рекомендую с помощью Postman (https://www.postman.com/downloads/).
 """
 from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonResponse
-
+import logging, json
 from challenges.models import Book
 
+logger = logging.getLogger(__name__)
 
 def create_book(title: str, author_full_name: str, isbn: str) -> Book:
-    # код писать тут
-    pass
+    book = Book(title=title, author_full_name=author_full_name, isbn=isbn)
+    book.save()
+    return book
 
 
 def create_book_handler(request: HttpRequest) -> HttpResponse:
-    title = request.POST.get("title")
-    author_full_name = request.POST.get("author_full_name")
-    isbn = request.POST.get("isbn")
+    logger.debug(request.body)
+    data = json.loads(request.body)
+    title = data.get("title")
+    author_full_name = data.get("author_full_name")
+    isbn = data.get("isbn")
     if not all([title, author_full_name, isbn]):
         return HttpResponseBadRequest("One of required parameters are missing")
 
